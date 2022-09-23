@@ -1,25 +1,23 @@
-from crypt import methods
-from pydoc import render_doc
 from flask import Flask, render_template, request, redirect, session
 
 app = Flask(__name__)
-app.secret_key = "keep it secret, keep it safe"
+app.secret_key = "secret key"
 
 
 @app.route("/")
 def index():
+    if "counter" not in session:
+        session["counter"] = 1
+    else:
+        session["counter"] += 1
+
     return render_template("index.html")
 
 
-app.route("/count", methods=["POST"])
-
-def count():
-    return redirect()
-
-
-@app.route("/destroy_session")
+@app.route("/destroy")
 def destroy():
-    return render_template("")
+    session.clear()
+    return redirect("/")
 
 
 if __name__ == "__main__":
